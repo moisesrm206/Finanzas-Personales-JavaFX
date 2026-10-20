@@ -1,0 +1,111 @@
+/* ===== Fondo ===== */
+.fondo-auth {
+    -fx-background-color: linear-gradient(to bottom, #0b2447 0%, #020b1a 100%);
+}
+
+/* ===== Encabezado ===== */
+.icono-marca {
+    -fx-background-color: #3b82f6;
+    -fx-background-radius: 7;
+}
+.icono-marca-letra {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.marca {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+.titulo-principal {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+.subtitulo-principal {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 14px;
+}
+
+/* ===== Tarjeta ===== */
+.tarjeta {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 28;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 24, 0, 0, 8);
+}
+.tarjeta-titulo {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.tarjeta-subtitulo {
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
+}
+.etiqueta-campo {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 0 0;
+}
+
+/* ===== Campos de texto ===== */
+.campo,
+/* Deja espacio a la derecha para el botón Mostrar/Ocultar */
+.campo-password {
+    -fx-padding: 10 44 10 12;   /* antes: 10 84 10 12 */
+}
+.campo:focused,
+.campo-password:focused {
+    -fx-background-color: white;
+    -fx-border-color: #2563eb;
+    -fx-border-width: 2;
+}
+
+.btn-ojo .ikonli-font-icon {
+    -fx-icon-color: #2563eb;
+}
+.icono-marca .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
+/* ===== Mensajes de error ===== */
+.error {
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 13px;
+    -fx-padding: 6 0 0 0;
+}
+
+/* ===== Botón principal ===== */
+.boton-primario {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 11 0 11 0;
+    -fx-cursor: hand;
+}
+.boton-primario:hover {
+    -fx-background-color: #1d4ed8;
+}
+.boton-primario:pressed {
+    -fx-background-color: #1e40af;
+}
+
+/* ===== Enlaces ===== */
+.texto-enlace {
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
+}
+.enlace,
+.enlace:visited,
+.enlace:focused {
+    -fx-text-fill: #2563eb;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 2;
+    -fx-border-color: transparent;
+}

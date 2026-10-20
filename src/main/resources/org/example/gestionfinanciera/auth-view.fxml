@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.gestionfinanciera.controllers.AuthController"
+           stylesheets="@styles/auth.css"
+           styleClass="fondo-auth">
+
+    <VBox spacing="8" alignment="CENTER_LEFT" prefWidth="440" maxWidth="440">
+
+        <!-- Encabezado fijo: al alternar solo cambian los textos -->
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <StackPane styleClass="icono-marca" minWidth="28" minHeight="28" prefWidth="28" prefHeight="28">
+                <FontIcon iconLiteral="fas-wallet" iconSize="16"/>
+            </StackPane>
+            <Label text="Finanzas" styleClass="marca"/>
+        </HBox>
+        <Label fx:id="lblTitulo" text="Gestiona tu futuro" styleClass="titulo-principal"/>
+        <Label fx:id="lblSubtitulo" wrapText="true" styleClass="subtitulo-principal"
+               text="Inicia sesión para revisar tus ahorros, gastos y objetivos financieros en un solo lugar."/>
+
+        <!-- Altura mínima para que el encabezado no se mueva al cambiar de formulario.
+             Ajusta el valor si el formulario de registro queda más alto o más bajo. -->
+        <StackPane alignment="TOP_CENTER" minHeight="440">
+            <VBox.margin>
+                <Insets top="16"/>
+            </VBox.margin>
+
+            <!-- ========== LOGIN ========== -->
+            <VBox fx:id="boxLogin" styleClass="tarjeta" spacing="4" maxHeight="-Infinity">
+                <Label text="Inicia sesión" styleClass="tarjeta-titulo"/>
+                <Label text="Bienvenido de vuelta. Ingresa tus datos para continuar." styleClass="tarjeta-subtitulo"/>
+
+                <Label text="Nombre de usuario" styleClass="etiqueta-campo"/>
+                <TextField fx:id="txtUsuarioLogin" promptText="Tu nombre de usuario" styleClass="campo"/>
+
+                <Label text="Contraseña" styleClass="etiqueta-campo"/>
+                <StackPane>
+                    <PasswordField fx:id="pfLogin" promptText="Tu contraseña" styleClass="campo-password"/>
+                    <TextField fx:id="tfLogin" promptText="Tu contraseña" styleClass="campo-password"
+                               visible="false" managed="false"/>
+                    <ToggleButton fx:id="tglLogin" styleClass="btn-ojo" focusTraversable="false"
+                                  StackPane.alignment="CENTER_RIGHT">
+                        <graphic>
+                            <FontIcon fx:id="icoLogin" iconLiteral="fas-eye" iconSize="16"/>
+                        </graphic>
+                    </ToggleButton>
+                </StackPane>
+
+                <!-- Espacio reservado para mensajes de error -->
+                <Label fx:id="lblErrorLogin" styleClass="error" minHeight="24" maxWidth="Infinity"/>
+
+                <Button fx:id="btnLogin" text="Iniciar sesión" onAction="#iniciarSesion"
+                        defaultButton="true" maxWidth="Infinity" styleClass="boton-primario"/>
+
+                <HBox alignment="CENTER" spacing="2">
+                    <VBox.margin>
+                        <Insets top="12"/>
+                    </VBox.margin>
+                    <Label text="¿No tienes una cuenta?" styleClass="texto-enlace"/>
+                    <Hyperlink text="Regístrate aquí" onAction="#mostrarRegistro" styleClass="enlace"/>
+                </HBox>
+            </VBox>
+
+            <!-- ========== REGISTRO (empieza oculto) ========== -->
+            <VBox fx:id="boxRegistro" styleClass="tarjeta" spacing="4" maxHeight="-Infinity"
+                  visible="false" managed="false">
+                <Label text="Crea tu cuenta" styleClass="tarjeta-titulo"/>
+                <Label text="Completa tus datos para unirte a la comunidad de Finanzas." styleClass="tarjeta-subtitulo"/>
+
+                <Label text="Nombre de usuario" styleClass="etiqueta-campo"/>
+                <TextField fx:id="txtUsuarioRegistro" promptText="juanperez" styleClass="campo"/>
+
+                <Label text="Contraseña" styleClass="etiqueta-campo"/>
+                <StackPane>
+                    <PasswordField fx:id="pfRegistro" promptText="Mínimo 6 caracteres" styleClass="campo-password"/>
+                    <TextField fx:id="tfRegistro" promptText="Mínimo 6 caracteres" styleClass="campo-password"
+                               visible="false" managed="false"/>
+                    <!-- Este botón controla los dos campos de contraseña del registro -->
+                    <ToggleButton fx:id="tglRegistro" styleClass="btn-ojo" focusTraversable="false"
+                                  StackPane.alignment="CENTER_RIGHT">
+                        <graphic>
+                            <FontIcon fx:id="icoRegistro" iconLiteral="fas-eye" iconSize="16"/>
+                        </graphic>
+                    </ToggleButton>
+                </StackPane>
+
+                <Label text="Confirmar contraseña" styleClass="etiqueta-campo"/>
+                <StackPane>
+                    <PasswordField fx:id="pfConfirmar" promptText="Repite tu contraseña" styleClass="campo-password"/>
+                    <TextField fx:id="tfConfirmar" promptText="Repite tu contraseña" styleClass="campo-password"
+                               visible="false" managed="false"/>
+                </StackPane>
+
+                <Label fx:id="lblErrorRegistro" styleClass="error" minHeight="24" maxWidth="Infinity"/>
+
+                <Button fx:id="btnRegistrar" text="Crear cuenta" onAction="#registrar"
+                        maxWidth="Infinity" styleClass="boton-primario"/>
+
+                <HBox alignment="CENTER" spacing="2">
+                    <VBox.margin>
+                        <Insets top="12"/>
+                    </VBox.margin>
+                    <Label text="¿Ya tienes una cuenta?" styleClass="texto-enlace"/>
+                    <Hyperlink text="Inicia sesión" onAction="#mostrarLogin" styleClass="enlace"/>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </VBox>
+</StackPane>
