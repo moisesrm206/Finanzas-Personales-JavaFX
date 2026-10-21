@@ -1,4 +1,4 @@
-package org.example.gestionfinanciera;
+package org.example.gestionfinanciera.database.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
