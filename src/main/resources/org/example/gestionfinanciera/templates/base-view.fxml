@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.gestionfinanciera.controllers.MainController"
+            stylesheets="@../styles/base.css"
+            styleClass="base-view">
+    <top>
+        <HBox alignment="CENTER_LEFT" styleClass="header">
+            <Button styleClass="menu-toggle" focusTraversable="false">
+                <graphic>
+                    <FontIcon iconLiteral="fas-bars" iconSize="16" />
+                </graphic>
+            </Button>
+            <Label text="Gestión de Finanzas Personales" styleClass="header-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="" styleClass="profile-icon"/>
+        </HBox>
+    </top>
+    <left>
+        <VBox spacing="50" styleClass="sidebar">
+            <Button text="Inicio" styleClass="navigation-button navigation-button-active"
+                    focusTraversable="false">
+                <graphic>
+                    <FontIcon iconLiteral="fas-home" iconSize="16"/>
+                </graphic>
+            </Button>
+            <Button text="Presupuesto" styleClass="navigation-button"
+                    focusTraversable="false">
+                <graphic>
+                    <FontIcon iconLiteral="fas-chart-line" iconSize="16"/>
+                </graphic>
+            </Button>
+            <Button text="Exportar" styleClass="navigation-button"
+                    focusTraversable="false">
+                <graphic>
+                    <FontIcon iconLiteral="fas-file-export" iconSize="16"/>
+                </graphic>
+            </Button>
+
+            <Button text="Movimientos" styleClass="navigation-button"
+                    focusTraversable="false">
+                <graphic>
+                    <FontIcon iconLiteral="fas-dollar-sign" iconSize="16"/>
+                </graphic>
+            </Button>
+
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="content" styleClass="content"/>
+    </center>
+</BorderPane>

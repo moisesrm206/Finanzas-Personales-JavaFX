@@ -1,0 +1,75 @@
+.base-view {
+    -fx-background-color: #454545;
+}
+
+.header {
+    -fx-background-color: #1d3557;
+    -fx-padding: 14px 16px 14px 20px;
+    -fx-spacing: 20px;
+    -fx-pref-height: 74px;
+}
+
+.menu-toggle {
+    -fx-background-color: transparent;
+    -fx-text-fill: #f4f7fb;
+    -fx-font-size: 25px;
+    -fx-padding: 0 4px;
+    -fx-cursor: hand;
+}
+
+.header-title {
+    -fx-text-fill: #f4f7fb;
+    -fx-font-size: 25px;
+    -fx-font-weight: 400;
+}
+
+.profile-icon {
+    -fx-background-color: #e5e8ec;
+    -fx-background-radius: 50%;
+    -fx-border-color: #cbd1d8;
+    -fx-border-radius: 50%;
+    -fx-text-fill: #1d3557;
+    -fx-font-size: 23px;
+    -fx-alignment: center;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+}
+
+.sidebar {
+    -fx-background-color: #3c538c;
+    -fx-padding: 20px 16px;
+    -fx-pref-width: 235px;
+    -fx-border-radius: 0 14px 14px 0;
+    -fx-background-radius: 0 14px 14px 0;
+    -fx-alignment: center-left;
+}
+
+.navigation-button {
+    -fx-background-color: #edf1f2;
+    -fx-background-radius: 0 14px 14px 0;
+    -fx-text-fill: #20252b;
+    -fx-font-size: 16px;
+    -fx-alignment: center-left;
+    -fx-padding: 0 14px;
+    -fx-pref-height: 42px;
+    -fx-max-width: Infinity;
+    -fx-cursor: hand;
+}
+
+.navigation-button:hover {
+    -fx-background-color: #dbe8ec;
+}
+
+.navigation-button-active {
+    -fx-background-color: #a9cbd2;
+}
+
+.navigation-button-active:hover {
+    -fx-background-color: #b8d7dc;
+}
+
+.content {
+    -fx-background-color: transparent;
+}
