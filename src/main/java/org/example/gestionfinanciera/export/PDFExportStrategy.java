@@ -1,4 +1,12 @@
 package org.example.gestionfinanciera.export;
 
-public class PDFExportStrategy {
+import org.example.gestionfinanciera.models.Movement;
+
+import java.util.List;
+
+public class PDFExportStrategy implements ExportStrategy {
+    @Override
+    public void exportData(List<Movement> movements, String filePath){
+
+    }
 }
