@@ -37,7 +37,7 @@
                 <Label text="Bienvenido de vuelta. Ingresa tus datos para continuar." styleClass="tarjeta-subtitulo"/>
 
                 <Label text="Nombre de usuario" styleClass="etiqueta-campo"/>
-                <TextField fx:id="txtUsuarioLogin" promptText="Tu nombre de usuario" styleClass="campo"/>
+                <TextField fx:id="txtUserLogin" promptText="Tu nombre de usuario" styleClass="campo"/>
 
                 <Label text="Contraseña" styleClass="etiqueta-campo"/>
                 <StackPane>
@@ -55,7 +55,7 @@
                 <!-- Espacio reservado para mensajes de error -->
                 <Label fx:id="lblErrorLogin" styleClass="error" minHeight="24" maxWidth="Infinity"/>
 
-                <Button fx:id="btnLogin" text="Iniciar sesión" onAction="#iniciarSesion"
+                <Button fx:id="btnLogin" text="Iniciar sesión" onAction="#signIn"
                         defaultButton="true" maxWidth="Infinity" styleClass="boton-primario"/>
 
                 <HBox alignment="CENTER" spacing="2">
@@ -63,26 +63,26 @@
                         <Insets top="12"/>
                     </VBox.margin>
                     <Label text="¿No tienes una cuenta?" styleClass="texto-enlace"/>
-                    <Hyperlink text="Regístrate aquí" onAction="#mostrarRegistro" styleClass="enlace"/>
+                    <Hyperlink text="Regístrate aquí" onAction="#showRegister" styleClass="enlace"/>
                 </HBox>
             </VBox>
 
             <!-- ========== REGISTRO (empieza oculto) ========== -->
-            <VBox fx:id="boxRegistro" styleClass="tarjeta" spacing="4" maxHeight="-Infinity"
+            <VBox fx:id="boxRegister" styleClass="tarjeta" spacing="4" maxHeight="-Infinity"
                   visible="false" managed="false">
                 <Label text="Crea tu cuenta" styleClass="tarjeta-titulo"/>
                 <Label text="Completa tus datos para unirte a la comunidad de Finanzas." styleClass="tarjeta-subtitulo"/>
 
                 <Label text="Nombre de usuario" styleClass="etiqueta-campo"/>
-                <TextField fx:id="txtUsuarioRegistro" promptText="juanperez" styleClass="campo"/>
+                <TextField fx:id="txtUserRegister" promptText="juanperez" styleClass="campo"/>
 
                 <Label text="Contraseña" styleClass="etiqueta-campo"/>
                 <StackPane>
-                    <PasswordField fx:id="pfRegistro" promptText="Mínimo 6 caracteres" styleClass="campo-password"/>
-                    <TextField fx:id="tfRegistro" promptText="Mínimo 6 caracteres" styleClass="campo-password"
+                    <PasswordField fx:id="pfRegister" promptText="Mínimo 6 caracteres" styleClass="campo-password"/>
+                    <TextField fx:id="tfRegister" promptText="Mínimo 6 caracteres" styleClass="campo-password"
                                visible="false" managed="false"/>
                     <!-- Este botón controla los dos campos de contraseña del registro -->
-                    <ToggleButton fx:id="tglRegistro" styleClass="btn-ojo" focusTraversable="false"
+                    <ToggleButton fx:id="tglRegister" styleClass="btn-ojo" focusTraversable="false"
                                   StackPane.alignment="CENTER_RIGHT">
                         <graphic>
                             <FontIcon fx:id="icoRegistro" iconLiteral="fas-eye" iconSize="16"/>
@@ -92,14 +92,14 @@
 
                 <Label text="Confirmar contraseña" styleClass="etiqueta-campo"/>
                 <StackPane>
-                    <PasswordField fx:id="pfConfirmar" promptText="Repite tu contraseña" styleClass="campo-password"/>
-                    <TextField fx:id="tfConfirmar" promptText="Repite tu contraseña" styleClass="campo-password"
+                    <PasswordField fx:id="pfConfirm" promptText="Repite tu contraseña" styleClass="campo-password"/>
+                    <TextField fx:id="tfConfirm" promptText="Repite tu contraseña" styleClass="campo-password"
                                visible="false" managed="false"/>
                 </StackPane>
 
-                <Label fx:id="lblErrorRegistro" styleClass="error" minHeight="24" maxWidth="Infinity"/>
+                <Label fx:id="lblErrorRegister" styleClass="error" minHeight="24" maxWidth="Infinity"/>
 
-                <Button fx:id="btnRegistrar" text="Crear cuenta" onAction="#registrar"
+                <Button fx:id="btnRegister" text="Crear cuenta" onAction="#logIn"
                         maxWidth="Infinity" styleClass="boton-primario"/>
 
                 <HBox alignment="CENTER" spacing="2">
@@ -107,7 +107,7 @@
                         <Insets top="12"/>
                     </VBox.margin>
                     <Label text="¿Ya tienes una cuenta?" styleClass="texto-enlace"/>
-                    <Hyperlink text="Inicia sesión" onAction="#mostrarLogin" styleClass="enlace"/>
+                    <Hyperlink text="Inicia sesión" onAction="#showLogin" styleClass="enlace"/>
                 </HBox>
             </VBox>
         </StackPane>

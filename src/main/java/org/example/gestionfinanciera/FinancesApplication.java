@@ -18,7 +18,7 @@ public class FinancesApplication extends Application {
         FXMLLoader fxmlLoader2 = new FXMLLoader(FinancesApplication.class.getResource("finances-view.fxml"));
         FXMLLoader fxmlLoader3 = new FXMLLoader(FinancesApplication.class.getResource("templates/base-view.fxml"));
 
-        Scene scene = new Scene(fxmlLoader3.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Aplicacion de finanzas personales");
         stage.setScene(scene);
         stage.setMaximized(true);
