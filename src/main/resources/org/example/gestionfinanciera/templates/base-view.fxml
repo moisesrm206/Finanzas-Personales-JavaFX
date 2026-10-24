@@ -25,27 +25,27 @@
     </top>
     <left>
         <VBox spacing="50" styleClass="sidebar">
-            <Button text="Inicio" styleClass="navigation-button navigation-button-active"
-                    focusTraversable="false">
+            <Button text="Inicio" styleClass="navigation-button"
+                    focusTraversable="false" onAction="#goHome">
                 <graphic>
                     <FontIcon iconLiteral="fas-home" iconSize="16"/>
                 </graphic>
             </Button>
             <Button text="Presupuesto" styleClass="navigation-button"
-                    focusTraversable="false">
+                    focusTraversable="false" onAction="#goBudget">
                 <graphic>
                     <FontIcon iconLiteral="fas-chart-line" iconSize="16"/>
                 </graphic>
             </Button>
             <Button text="Exportar" styleClass="navigation-button"
-                    focusTraversable="false">
+                    focusTraversable="false" onAction="#goExport">
                 <graphic>
                     <FontIcon iconLiteral="fas-file-export" iconSize="16"/>
                 </graphic>
             </Button>
 
             <Button text="Movimientos" styleClass="navigation-button"
-                    focusTraversable="false">
+                    focusTraversable="false" onAction="#goMovements">
                 <graphic>
                     <FontIcon iconLiteral="fas-dollar-sign" iconSize="16"/>
                 </graphic>

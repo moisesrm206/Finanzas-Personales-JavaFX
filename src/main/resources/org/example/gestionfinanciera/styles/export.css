@@ -1,0 +1,158 @@
+/* Colocar en resources/<paquete>/styles/export.css */
+
+.export-root {
+    /* Colores de la vista: cámbialos aquí y se actualiza todo */
+    -export-primary: #2563eb;
+    -export-text: #0f172a;
+    -export-muted: #475569;
+    -export-border: #94a3b8;
+
+    -fx-background-color: -export-bg;
+    -fx-padding: 24;
+}
+
+/* ===== Tarjeta ===== */
+.export-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 28;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.18), 24, 0, 0, 6);
+}
+
+.export-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -export-text;
+}
+
+.export-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: -export-muted;
+}
+
+.export-section {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -export-text;
+}
+
+.export-section-icon {
+    -fx-icon-color: -export-primary;
+}
+
+.export-field-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -export-text;
+}
+
+.export-hint {
+    -fx-font-size: 12px;
+    -fx-text-fill: -export-muted;
+}
+
+/* ===== Campos ===== */
+.export-combo,
+.export-field {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 8;
+    -fx-border-color: -export-border;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 14px;
+}
+
+.export-field {
+    -fx-padding: 9 12;
+    -fx-text-fill: -export-text;
+    -fx-prompt-text-fill: #64748b;
+}
+
+.export-combo {
+    -fx-padding: 3 4;
+}
+
+.export-combo .list-cell {
+    -fx-text-fill: -export-text;
+    -fx-background-color: transparent;
+}
+
+.export-combo .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.export-combo .arrow {
+    -fx-background-color: -export-muted;
+}
+
+.export-combo:focused,
+.export-field:focused {
+    -fx-background-color: white;
+    -fx-border-color: -export-primary;
+    -fx-border-width: 2;
+}
+
+/* Lista desplegable de los ComboBox */
+.combo-box-popup .list-view .list-cell:filled:hover,
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+}
+
+/* ===== Botones de exportación ===== */
+.export-btn-excel,
+.export-btn-pdf {
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 16;
+    -fx-graphic-text-gap: 10;
+    -fx-cursor: hand;
+}
+
+.export-btn-excel {
+    -fx-background-color: #15803d;
+}
+.export-btn-excel:hover {
+    -fx-background-color: #166534;
+}
+
+.export-btn-pdf {
+    -fx-background-color: #b91c1c;
+}
+.export-btn-pdf:hover {
+    -fx-background-color: #991b1b;
+}
+
+.export-btn-excel:disabled,
+.export-btn-pdf:disabled {
+    -fx-opacity: 0.55;
+}
+
+.export-btn-excel .ikonli-font-icon,
+.export-btn-pdf .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
+/* ===== Mensajes de estado ===== */
+.export-status {
+    -fx-font-size: 13px;
+    -fx-padding: 10 12;
+    -fx-background-radius: 8;
+}
+
+.export-status-ok {
+    -fx-background-color: #dcfce7;
+    -fx-text-fill: #166534;
+}
+
+.export-status-error {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #991b1b;
+}
+
+.export-status-info {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: #1e40af;
+}

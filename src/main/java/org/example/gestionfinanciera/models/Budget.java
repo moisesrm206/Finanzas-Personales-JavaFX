@@ -1,13 +1,16 @@
 package org.example.gestionfinanciera.models;
 
 public class Budget {
-    int budgetId;
-    int userId;
-    int categoryId;
-    double limit;
-    int month;
+    private String budgetId;
+    private String userId;
+    private String categoryId;
+    private double limit;
+    private int month; // 1 a 12
 
-    public Budget(int budgetId, int userId, int categoryId, double limit, int month) {
+    public Budget() {
+    }
+
+    public Budget(String budgetId, String userId, String categoryId, double limit, int month) {
         this.budgetId = budgetId;
         this.userId = userId;
         this.categoryId = categoryId;
@@ -15,27 +18,27 @@ public class Budget {
         this.month = month;
     }
 
-    public int getBudgetId() {
+    public String getBudgetId() {
         return budgetId;
     }
 
-    public void setBudgetId(int budgetId) {
+    public void setBudgetId(String budgetId) {
         this.budgetId = budgetId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 

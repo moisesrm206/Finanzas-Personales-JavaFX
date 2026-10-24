@@ -1,14 +1,18 @@
 package org.example.gestionfinanciera.controllers;
 
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.example.gestionfinanciera.dao.userDAOImpl;
+import org.example.gestionfinanciera.models.User;
+import org.example.gestionfinanciera.services.ActualSession;
 import org.example.gestionfinanciera.services.userService;
 import org.example.gestionfinanciera.services.userServiceImpl;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -108,17 +112,28 @@ public class AuthController {
 
     @FXML
     private void signIn() {
-        String user = txtUserLogin.getText().trim();
+        String username = txtUserLogin.getText().trim();
         String password = pfLogin.getText();
 
-        if (user.isEmpty() || password.isEmpty()) {
-            lblErrorLogin.setText("Escribe tu user y tu contraseña.");
+        if (username.isEmpty() || password.isEmpty()) {
+            lblErrorLogin.setText("Escribe tu usuario y tu contraseña.");
             return;
         }
 
-        // TODO: llamar al servicio de autenticación dentro de un Task
-        // (si falla: lblErrorLogin.setText("Usuario o contraseña incorrectos."))
-
+        setBusy(true);
+        var task = userService.authenticateTask(username, password);
+        task.setOnSucceeded(event -> {
+            setBusy(false);
+            User user = task.getValue();
+            user.setPassword(null);
+            ActualSession.getInstance().iniciar(user);
+            openMainView(task.getValue());
+        });
+        task.setOnFailed(event -> {
+            setBusy(false);
+            lblErrorLogin.setText(messageFor(task.getException(), "Usuario o contraseña incorrectos."));
+        });
+        start(task);
     }
 
     @FXML
@@ -140,9 +155,19 @@ public class AuthController {
             return;
         }
 
-        // TODO: verificar que el user no exista y guardarlo con hash, dentro de un Task
-        // (si ya existe: lblErrorRegistro.setText("Ese nombre de user ya está en uso."))
-
+        setBusy(true);
+        var task = userService.registerTask(user, password);
+        task.setOnSucceeded(event -> {
+            setBusy(false);
+            switchMode(true);
+            txtUserLogin.setText(user);
+            lblErrorLogin.setText("Cuenta creada. Ya puedes iniciar sesión.");
+        });
+        task.setOnFailed(event -> {
+            setBusy(false);
+            lblErrorRegister.setText(messageFor(task.getException(), "No se pudo crear la cuenta."));
+        });
+        start(task);
     }
 
     // Utilidades
@@ -166,6 +191,34 @@ public class AuthController {
     private void clearWritingErr(Label error, TextField... fields) {
         for (TextField field : fields) {
             field.textProperty().addListener((obs, previous, recent) -> error.setText(""));
+        }
+    }
+
+    private void start(javafx.concurrent.Task<?> task) {
+        Thread thread = new Thread(task, "auth-operation");
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void setBusy(boolean busy) {
+        btnLogin.setDisable(busy);
+        btnRegister.setDisable(busy);
+    }
+
+    private String messageFor(Throwable error, String fallback) {
+        return error == null || error.getMessage() == null ? fallback : error.getMessage();
+    }
+
+    private void openMainView(User user) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/org/example/gestionfinanciera/templates/base-view.fxml"));
+            Parent view = loader.load();
+            Stage stage = (Stage) btnLogin.getScene().getWindow();
+            stage.getScene().setRoot(view);
+            stage.setTitle("Gestión de Finanzas Personales - " + user.getName());
+        } catch (java.io.IOException e) {
+            lblErrorLogin.setText("No se pudo abrir la aplicación.");
         }
     }
 }

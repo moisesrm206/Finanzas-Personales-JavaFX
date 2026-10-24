@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface ExportStrategy {
     void exportData(List<Movement> movements, String filePath);
-
 }

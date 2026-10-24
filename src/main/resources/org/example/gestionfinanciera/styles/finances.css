@@ -1,0 +1,36 @@
+.titulo-vista {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.error-vista {
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 13px;
+}
+
+.resumen-grafico {
+    -fx-font-size: 13px;
+    -fx-text-fill: #475569;
+}
+
+/* Ingresos en verde */
+.default-color0.chart-series-line {
+    -fx-stroke: #16a34a;
+}
+.default-color0.chart-line-symbol {
+    -fx-background-color: #16a34a, white;
+}
+.default-color0.chart-legend-item-symbol {
+    -fx-background-color: #16a34a;
+}
+
+/* Gastos en rojo */
+.default-color1.chart-series-line {
+    -fx-stroke: #dc2626;
+}
+.default-color1.chart-line-symbol {
+    -fx-background-color: #dc2626, white;
+}
+.default-color1.chart-legend-item-symbol {
+    -fx-background-color: #dc2626;
+}

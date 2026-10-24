@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@styles/home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gestionfinanciera.controllers.HomeController">
+
+    <!-- Contenido Principal -->
+    <center>
+        <VBox spacing="20.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+
+            <!-- Barra Superior: Título y Botón de Refrescar / Indicador de Carga -->
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label styleClass="view-title" text="Panel Financiero" />
+                    <Label styleClass="view-subtitle" text="Resumen de gastos y tendencia de ingresos." />
+                </VBox>
+
+                <ProgressIndicator fx:id="piLoading" maxHeight="25.0" maxWidth="25.0" visible="false" />
+
+                <Button fx:id="btnRefresh" onAction="#handleRefresh" styleClass="action-button" text="Actualizar" />
+            </HBox>
+
+            <!-- Mensaje de Error Global si ocurre alguno -->
+            <Label fx:id="lblError" managed="false" styleClass="error-label" visible="false" wrapText="true" />
+
+            <!-- Sección de Gráficos (Distribución de Gastos y Línea de Tendencia) -->
+            <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+
+                <!-- Tarjeta 1: Gráfico de Pastel (Gastos del Mes) -->
+                <VBox spacing="10.0" styleClass="chart-card" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Label styleClass="card-title" text="Gastos por Categoría" />
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="cbMonth" prefWidth="150.0" promptText="Seleccionar mes" styleClass="combo-box-custom" />
+                    </HBox>
+
+                    <PieChart fx:id="pieExpenses" legendSide="BOTTOM" VBox.vgrow="ALWAYS" />
+
+                    <Label fx:id="lblPieSummary" styleClass="card-summary" text="Cargando resumen..." wrapText="true" />
+                </VBox>
+
+                <!-- Tarjeta 2: Gráfico de Líneas (Ingresos vs Gastos Anual) -->
+                <VBox spacing="10.0" styleClass="chart-card" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Label styleClass="card-title" text="Tendencia Anual" />
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="cbYear" prefWidth="100.0" promptText="Año" styleClass="combo-box-custom" />
+                    </HBox>
+
+                    <LineChart fx:id="lineTrend" legendSide="BOTTOM" VBox.vgrow="ALWAYS">
+                        <xAxis>
+                            <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="yAxis" side="LEFT" />
+                        </yAxis>
+                    </LineChart>
+
+                    <Label fx:id="lblTrendSummary" styleClass="card-summary" text="Cargando balance..." wrapText="true" />
+                </VBox>
+
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

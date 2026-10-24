@@ -1,14 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.gestionfinanciera.controllers.ExportController"
-            prefHeight="400.0" prefWidth="600.0">
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.gestionfinanciera.controllers.ExportController"
+           stylesheets="@styles/export.css"
+           styleClass="export-root">
 
-</AnchorPane>
+    <VBox styleClass="export-card" spacing="20" maxWidth="580" maxHeight="-Infinity">
+
+        <!-- Encabezado -->
+        <VBox spacing="4">
+            <Label text="Exportar movimientos" styleClass="export-title"/>
+            <Label text="Elige qué movimientos incluir y en qué formato descargarlos."
+                   styleClass="export-subtitle" wrapText="true"/>
+        </VBox>
+
+        <!-- Filtros -->
+        <VBox spacing="12">
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <FontIcon iconLiteral="fas-filter" iconSize="14" styleClass="export-section-icon"/>
+                <Label text="Filtros" styleClass="export-section"/>
+            </HBox>
+
+            <GridPane hgap="16" vgap="14">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Categoría" styleClass="export-field-label"/>
+                    <ComboBox fx:id="cmbCategory" maxWidth="Infinity" styleClass="export-combo"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Tipo de movimiento" styleClass="export-field-label"/>
+                    <ComboBox fx:id="cmbType" maxWidth="Infinity" styleClass="export-combo"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Estado" styleClass="export-field-label"/>
+                    <ComboBox fx:id="cmbState" maxWidth="Infinity" styleClass="export-combo"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Etiqueta" styleClass="export-field-label"/>
+                    <TextField fx:id="txtTag" promptText="#vacaciones" styleClass="export-field"/>
+                </VBox>
+            </GridPane>
+
+            <Label text="Si no eliges ningún filtro, se exportan todos tus movimientos."
+                   styleClass="export-hint" wrapText="true"/>
+        </VBox>
+
+        <!-- Formato de exportación -->
+        <VBox spacing="12">
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <FontIcon iconLiteral="fas-file-export" iconSize="14" styleClass="export-section-icon"/>
+                <Label text="Formato" styleClass="export-section"/>
+            </HBox>
+
+            <HBox spacing="12">
+                <Button fx:id="btnExcel" text="Exportar a Excel" onAction="#exportToExcel"
+                        maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="export-btn-excel">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-file-excel" iconSize="16"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="btnPdf" text="Exportar a PDF" onAction="#exportToPdf"
+                        maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="export-btn-pdf">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-file-pdf" iconSize="16"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <!-- Mensajes de estado (solo se ve cuando hay texto) -->
+        <Label fx:id="lblStatus" wrapText="true" maxWidth="Infinity" styleClass="export-status"/>
+    </VBox>
+
+    <!-- Indicador de carga: se ve mientras se consulta Firebase o se genera el archivo -->
+    <ProgressIndicator fx:id="piLoading" visible="false" maxWidth="48" maxHeight="48"/>
+</StackPane>

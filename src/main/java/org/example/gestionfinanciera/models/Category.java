@@ -1,21 +1,24 @@
 package org.example.gestionfinanciera.models;
 
 public class Category {
-    int categoryId;
-    String categoryName;
-    int userID;
+    private String categoryId;
+    private String categoryName;
+    private String userId; // antes "userID": ahora se llama igual en todos los modelos
 
-    public Category(int categoryId, String categoryName, int userID) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.userID = userID;
+    public Category() {
     }
 
-    public int getCategoryId() {
+    public Category(String categoryId, String categoryName, String userId) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.userId = userId;
+    }
+
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -27,13 +30,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public int getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
-
-
 }

@@ -1,15 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.gestionfinanciera.controllers.FinancesController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.gestionfinanciera.controllers.FinancesController"
+           stylesheets="@styles/movements.css">
 
+    <!-- ===================== VISTA PRINCIPAL (se desenfoca al abrir el formulario) ===================== -->
+    <StackPane fx:id="mainLayer" styleClass="mov-main">
 
-</VBox>
+        <VBox styleClass="mov-panel" spacing="14">
+
+            <!-- Encabezado -->
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <VBox spacing="2">
+                    <Label text="Movimientos" styleClass="mov-title"/>
+                    <Label text="Consulta, busca y administra tus ingresos y gastos."
+                           styleClass="mov-subtitle" wrapText="true"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ProgressIndicator fx:id="piLoading" visible="false" prefWidth="26" prefHeight="26"
+                                   minWidth="26" minHeight="26" maxWidth="26" maxHeight="26"/>
+            </HBox>
+
+            <!-- Búsqueda y botón de filtros -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <HBox styleClass="mov-search" spacing="8" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                    <FontIcon iconLiteral="fas-search" iconSize="14" styleClass="mov-search-icon"/>
+                    <TextField fx:id="txtSearch" promptText="Buscar por concepto, categoría, etiqueta o monto..."
+                               styleClass="mov-search-field" HBox.hgrow="ALWAYS"/>
+                </HBox>
+                <ToggleButton fx:id="btnFilter" text="Filtros" styleClass="mov-btn-filter">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-filter" iconSize="14"/>
+                    </graphic>
+                </ToggleButton>
+            </HBox>
+
+            <!-- Panel de filtros (se muestra con el botón Filtros) -->
+            <HBox fx:id="boxFilters" styleClass="mov-filters" spacing="12" alignment="BOTTOM_LEFT"
+                  visible="false" managed="false">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Categoría" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbFilterCategory" maxWidth="Infinity" styleClass="mov-combo"/>
+                </VBox>
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Tipo" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbFilterType" maxWidth="Infinity" styleClass="mov-combo"/>
+                </VBox>
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Estado" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbFilterState" maxWidth="Infinity" styleClass="mov-combo"/>
+                </VBox>
+                <Button text="Limpiar" onAction="#clearFilters" styleClass="mov-btn-secondary"/>
+            </HBox>
+
+            <!-- Mensajes (solo se ven cuando hay texto) -->
+            <Label fx:id="lblMessage" wrapText="true" maxWidth="Infinity" styleClass="mov-msg"/>
+
+            <Label fx:id="lblCount" styleClass="mov-count"/>
+
+            <!-- Lista de movimientos -->
+            <ListView fx:id="listMovements" styleClass="mov-list" VBox.vgrow="ALWAYS"/>
+        </VBox>
+
+        <!-- Botón flotante para agregar un movimiento -->
+        <Button fx:id="btnAdd" onAction="#newMovement" styleClass="mov-fab"
+                StackPane.alignment="BOTTOM_RIGHT">
+            <graphic>
+                <FontIcon iconLiteral="fas-plus" iconSize="22"/>
+            </graphic>
+            <tooltip>
+                <Tooltip text="Nuevo movimiento"/>
+            </tooltip>
+            <StackPane.margin>
+                <Insets right="44" bottom="44"/>
+            </StackPane.margin>
+        </Button>
+    </StackPane>
+
+    <!-- ===================== FORMULARIO (crear / modificar) SOBRE LA VISTA DESENFOCADA ===================== -->
+    <StackPane fx:id="overlay" styleClass="mov-scrim" visible="false" managed="false">
+        <VBox styleClass="mov-form-card" spacing="14" maxWidth="680" maxHeight="-Infinity">
+
+            <HBox alignment="CENTER_LEFT">
+                <Label fx:id="lblFormTitle" styleClass="mov-form-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button onAction="#cancelForm" styleClass="mov-icon-btn" focusTraversable="false">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-times" iconSize="16"/>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <GridPane hgap="16" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Fecha" styleClass="mov-label"/>
+                    <DatePicker fx:id="dpDate" maxWidth="Infinity" styleClass="mov-combo"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Tipo de movimiento" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbType" maxWidth="Infinity" styleClass="mov-combo"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Monto (MXN)" styleClass="mov-label"/>
+                    <TextField fx:id="txtAmount" promptText="0.00" styleClass="mov-field"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Categoría" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbCategory" promptText="Elige una categoría" maxWidth="Infinity"
+                              styleClass="mov-combo"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label fx:id="lblAccount" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbAccount" promptText="Elige una cuenta" maxWidth="Infinity"
+                              styleClass="mov-combo"/>
+                </VBox>
+
+                <!-- Solo se ve cuando el tipo es Transferencia -->
+                <VBox fx:id="boxDestination" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label text="Cuenta destino" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbDestination" promptText="Elige la cuenta destino" maxWidth="Infinity"
+                              styleClass="mov-combo"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <Label text="Estado" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbState" maxWidth="Infinity" styleClass="mov-combo"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Label text="Método de pago" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbPayment" maxWidth="Infinity" styleClass="mov-combo"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
+                    <Label text="Concepto o descripción" styleClass="mov-label"/>
+                    <TextField fx:id="txtConcept" promptText="Ej. Despensa de la semana" styleClass="mov-field"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2">
+                    <Label text="Etiquetas" styleClass="mov-label"/>
+                    <TextField fx:id="txtTags" promptText="#vacaciones, #becas, #impuestos" styleClass="mov-field"/>
+                    <Label text="Sepáralas con comas o espacios. El # se agrega solo si lo olvidas."
+                           styleClass="mov-hint"/>
+                </VBox>
+            </GridPane>
+
+            <Label fx:id="lblFormError" wrapText="true" maxWidth="Infinity" styleClass="mov-error"/>
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Cancelar" onAction="#cancelForm" styleClass="mov-btn-secondary"/>
+                <Button fx:id="btnSaveForm" text="Guardar" onAction="#saveMovement" styleClass="mov-btn-primary">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-save" iconSize="14"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </StackPane>
+</StackPane>

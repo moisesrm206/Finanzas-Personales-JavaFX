@@ -3,25 +3,28 @@ package org.example.gestionfinanciera.models;
 import java.util.Date;
 
 public class Movement {
-    int movementId;
-    int categoryId;
-    int originAccountId;
-    int destinationAccountId;
-    int userId;
-    double amount;
-    String type;
-    String concept;
-    Date date;
-    PaymentMethod paymentMethod;
-    String state;
-    String[] tags = new String[0];
+    private String movementId;
+    private String categoryId;
+    private String originAccountId;
+    private String destinationAccountId; // solo se usa en las transferencias
+    private String userId;
+    private double amount;
+    private String type;
+    private String concept;
+    private Date date;
+    private PaymentMethod paymentMethod;
+    private String state;
+    private String[] tags = new String[0];
 
-    enum PaymentMethod {
-        CASH, CREDIT_CARD, DEBIT_CARD, BANK_TRANSFER, CHECK
+    public enum PaymentMethod {
+        CASH, CREDIT_CARD, DEBIT_CARD, BANK_TRANSFER, CHECK, SPEI
     }
 
-    public Movement(int movementId, int categoryId, int originAccountId, int destinationAccountId,
-                    int userId, double amount, String type, String concept, PaymentMethod paymentMethod,
+    public Movement() {
+    }
+
+    public Movement(String movementId, String categoryId, String originAccountId, String destinationAccountId,
+                    String userId, double amount, String type, String concept, PaymentMethod paymentMethod,
                     Date date, String state, String[] tags) {
         this.movementId = movementId;
         this.categoryId = categoryId;
@@ -37,43 +40,43 @@ public class Movement {
         this.tags = tags;
     }
 
-    public int getMovementId() {
+    public String getMovementId() {
         return movementId;
     }
 
-    public void setMovementId(int movementId) {
+    public void setMovementId(String movementId) {
         this.movementId = movementId;
     }
 
-    public int getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
-    public int getOriginAccountId() {
+    public String getOriginAccountId() {
         return originAccountId;
     }
 
-    public void setOriginAccountId(int originAccountId) {
+    public void setOriginAccountId(String originAccountId) {
         this.originAccountId = originAccountId;
     }
 
-    public int getDestinationAccountId() {
+    public String getDestinationAccountId() {
         return destinationAccountId;
     }
 
-    public void setDestinationAccountId(int destinationAccountId) {
+    public void setDestinationAccountId(String destinationAccountId) {
         this.destinationAccountId = destinationAccountId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

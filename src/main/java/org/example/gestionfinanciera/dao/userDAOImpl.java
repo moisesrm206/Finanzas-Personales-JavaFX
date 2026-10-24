@@ -16,6 +16,9 @@ import java.util.Base64;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class userDAOImpl implements userDAO{
 
@@ -42,11 +45,35 @@ public class userDAOImpl implements userDAO{
             return null;
         }
 
-        return new User(
-                snapshot.getId(),
-                snapshot.getString("name"),
-                snapshot.getString("password")
-        );
+        return toUser(snapshot);
+    }
+
+    @Override
+    public Optional<User> getUserByName(String name) {
+        if (name == null || name.isBlank()) {
+            return Optional.empty();
+        }
+
+        var snapshots = await(
+                db.collection(USERS_COLLECTION)
+                        .whereEqualTo("name", name.trim())
+                        .limit(1)
+                        .get()
+        ).getDocuments();
+
+        if (snapshots.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(toUser(snapshots.get(0)));
+    }
+
+    @Override
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+        for (DocumentSnapshot snapshot : await(db.collection(USERS_COLLECTION).get()).getDocuments()) {
+            users.add(toUser(snapshot));
+        }
+        return users;
     }
 
     @Override
@@ -81,9 +108,16 @@ public class userDAOImpl implements userDAO{
         return db.collection(USERS_COLLECTION).document(id);
     }
 
+    private User toUser(DocumentSnapshot snapshot) {
+        return new User(
+                snapshot.getId(),
+                snapshot.getString("name"),
+                snapshot.getString("password")
+        );
+    }
+
     private Map<String, Object> toDocument(User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("id", user.getId());
         data.put("name", user.getName());
         data.put("password", hashIfNeeded(user.getPassword()));
         return data;

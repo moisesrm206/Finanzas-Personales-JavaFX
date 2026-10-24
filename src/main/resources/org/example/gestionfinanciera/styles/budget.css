@@ -1,0 +1,266 @@
+/* Colocar en resources/org/example/gestionfinanciera/styles/budget.css */
+
+.budget-root {
+    -fx-padding: 24;
+}
+
+/* ===== Panel principal ===== */
+.budget-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 26;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.18), 24, 0, 0, 6);
+}
+
+.budget-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.budget-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #475569;
+}
+
+.budget-section {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.budget-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.budget-hint {
+    -fx-font-size: 12px;
+    -fx-text-fill: #475569;
+}
+
+/* ===== Aviso general ===== */
+.budget-alert {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 14;
+    -fx-background-radius: 10;
+    -fx-graphic-text-gap: 10;
+}
+
+.budget-alert-ok {
+    -fx-background-color: #dcfce7;
+    -fx-text-fill: #166534;
+}
+.budget-alert-ok .ikonli-font-icon {
+    -fx-icon-color: #166534;
+}
+
+.budget-alert-warning {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #92400e;
+}
+.budget-alert-warning .ikonli-font-icon {
+    -fx-icon-color: #92400e;
+}
+
+.budget-alert-exceeded {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #991b1b;
+}
+.budget-alert-exceeded .ikonli-font-icon {
+    -fx-icon-color: #991b1b;
+}
+
+/* ===== Formulario ===== */
+.budget-form-card {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 12;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 12;
+    -fx-padding: 18;
+}
+
+.budget-combo,
+.budget-field {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #94a3b8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 14px;
+}
+
+.budget-field {
+    -fx-padding: 9 12;
+    -fx-text-fill: #0f172a;
+    -fx-prompt-text-fill: #64748b;
+}
+
+.budget-combo {
+    -fx-padding: 3 4;
+}
+
+.budget-combo .list-cell {
+    -fx-text-fill: #0f172a;
+    -fx-background-color: transparent;
+}
+
+.budget-combo .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.budget-combo .arrow {
+    -fx-background-color: #475569;
+}
+
+.budget-combo:focused,
+.budget-field:focused {
+    -fx-border-color: #2563eb;
+    -fx-border-width: 2;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover,
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+}
+
+.budget-btn-primary {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 11 16;
+    -fx-graphic-text-gap: 8;
+    -fx-cursor: hand;
+}
+.budget-btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+.budget-btn-primary:disabled {
+    -fx-opacity: 0.55;
+}
+.budget-btn-primary .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
+.budget-msg {
+    -fx-font-size: 13px;
+}
+.budget-msg-ok {
+    -fx-text-fill: #166534;
+}
+.budget-msg-error {
+    -fx-text-fill: #b91c1c;
+}
+
+/* ===== Lista ===== */
+.budget-scroll {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.budget-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.budget-empty {
+    -fx-font-size: 14px;
+    -fx-text-fill: #475569;
+    -fx-padding: 12 0;
+}
+
+.budget-card {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 12;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 12;
+    -fx-padding: 14 16;
+}
+
+.budget-card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.budget-card-amounts {
+    -fx-font-size: 13px;
+    -fx-text-fill: #475569;
+}
+
+.budget-card-percent {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.budget-card-remaining {
+    -fx-font-size: 12px;
+    -fx-text-fill: #475569;
+}
+
+/* Etiqueta de estado */
+.budget-badge {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 10;
+    -fx-background-radius: 12;
+}
+.budget-badge-ok {
+    -fx-background-color: #dcfce7;
+    -fx-text-fill: #166534;
+}
+.budget-badge-warning {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #92400e;
+}
+.budget-badge-exceeded {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #991b1b;
+}
+
+/* Barra de progreso: el color cambia según el nivel */
+.budget-bar-ok {
+    -fx-accent: #16a34a;
+}
+.budget-bar-warning {
+    -fx-accent: #d97706;
+}
+.budget-bar-exceeded {
+    -fx-accent: #dc2626;
+}
+.budget-card .progress-bar > .track {
+    -fx-background-color: #e2e8f0;
+    -fx-background-radius: 6;
+    -fx-background-insets: 0;
+}
+.budget-card .progress-bar > .bar {
+    -fx-background-color: -fx-accent;
+    -fx-background-radius: 6;
+    -fx-background-insets: 0;
+    -fx-padding: 6;
+}
+
+/* Botones de editar y eliminar */
+.budget-icon-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-padding: 6 8;
+    -fx-cursor: hand;
+}
+.budget-icon-btn .ikonli-font-icon {
+    -fx-icon-color: #475569;
+}
+.budget-icon-btn:hover {
+    -fx-background-color: #e2e8f0;
+}
+.budget-icon-btn:hover .ikonli-font-icon {
+    -fx-icon-color: #2563eb;
+}
+.budget-icon-delete:hover .ikonli-font-icon {
+    -fx-icon-color: #dc2626;
+}

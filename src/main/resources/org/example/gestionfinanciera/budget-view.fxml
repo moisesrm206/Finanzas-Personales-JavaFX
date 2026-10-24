@@ -1,22 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="org.example.gestionfinanciera.controllers.BudgetController"
            stylesheets="@styles/budget.css"
-           styleClass="budget-view">
+           styleClass="budget-root">
 
-    <VBox alignment="CENTER" spacing="20.0">
-        <Label text="Presupuesto" styleClass="budget-title"/>
-        <Label text="Aquí puedes gestionar tu presupuesto." styleClass="budget-subtitle"/>
-        <!-- Aquí puedes agregar más elementos para mostrar y gestionar el presupuesto -->
+    <VBox styleClass="budget-panel" spacing="16">
+
+        <!-- Encabezado -->
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <VBox spacing="2">
+                <Label text="Presupuestos" styleClass="budget-title"/>
+                <Label text="Fija un tope de gasto mensual por categoría y recibe avisos al acercarte."
+                       styleClass="budget-subtitle" wrapText="true"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Mes:" styleClass="budget-label"/>
+            <ComboBox fx:id="cbMonth" prefWidth="190" styleClass="budget-combo"/>
+        </HBox>
+
+        <!-- Aviso general del mes (solo se ve cuando hay texto) -->
+        <Label fx:id="lblAlert" wrapText="true" maxWidth="Infinity" styleClass="budget-alert"/>
+
+        <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+            <!-- Formulario -->
+            <VBox styleClass="budget-form-card" spacing="10" prefWidth="320" minWidth="280"
+                  maxWidth="340" maxHeight="-Infinity">
+                <Label text="Fijar presupuesto" styleClass="budget-section"/>
+
+                <Label text="Categoría" styleClass="budget-label"/>
+                <ComboBox fx:id="cbCategory" promptText="Elige una categoría" maxWidth="Infinity"
+                          styleClass="budget-combo"/>
+
+                <Label text="Límite mensual (MXN)" styleClass="budget-label"/>
+                <TextField fx:id="txtLimit" promptText="Ej. 3500" onAction="#saveBudget"
+                           styleClass="budget-field"/>
+
+                <Button fx:id="btnSave" text="Guardar presupuesto" onAction="#saveBudget"
+                        maxWidth="Infinity" styleClass="budget-btn-primary">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-save" iconSize="14"/>
+                    </graphic>
+                </Button>
+
+                <Label fx:id="lblFormMessage" wrapText="true" maxWidth="Infinity" styleClass="budget-msg"/>
+                <Label text="Si la categoría ya tiene presupuesto en el mes elegido, se actualiza su límite."
+                       styleClass="budget-hint" wrapText="true"/>
+            </VBox>
+
+            <!-- Lista de presupuestos del mes -->
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS"
+                            styleClass="budget-scroll">
+                    <VBox fx:id="boxBudgets" spacing="12"/>
+                </ScrollPane>
+                <Label fx:id="lblEmpty" visible="false" managed="false" wrapText="true"
+                       maxWidth="Infinity" styleClass="budget-empty"
+                       text="Aún no hay presupuestos para este mes. Crea el primero con el formulario."/>
+            </VBox>
+        </HBox>
     </VBox>
-    <fx:include source="templates/base-view.fxml" fx:id="content"/>
 
+    <!-- Indicador de carga -->
+    <ProgressIndicator fx:id="piLoading" visible="false" maxWidth="48" maxHeight="48"/>
 </StackPane>
