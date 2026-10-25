@@ -68,19 +68,35 @@
             <ListView fx:id="listMovements" styleClass="mov-list" VBox.vgrow="ALWAYS"/>
         </VBox>
 
-        <!-- Botón flotante para agregar un movimiento -->
-        <Button fx:id="btnAdd" onAction="#newMovement" styleClass="mov-fab"
-                StackPane.alignment="BOTTOM_RIGHT">
+        <MenuButton fx:id="btnAddMenu" styleClass="mov-fab-menu"
+                    StackPane.alignment="BOTTOM_RIGHT" focusTraversable="false" popupSide="TOP">
             <graphic>
                 <FontIcon iconLiteral="fas-plus" iconSize="22"/>
             </graphic>
             <tooltip>
-                <Tooltip text="Nuevo movimiento"/>
+                <Tooltip text="Crear nuevo..."/>
             </tooltip>
+            <items>
+                <MenuItem text="Nuevo movimiento" onAction="#newMovement">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-dollar-sign" iconSize="14"/>
+                    </graphic>
+                </MenuItem>
+                <MenuItem text="Nueva categoría" onAction="#newCategory">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-tags" iconSize="14"/>
+                    </graphic>
+                </MenuItem>
+                <MenuItem text="Nueva cuenta" onAction="#newAccount">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-wallet" iconSize="14"/>
+                    </graphic>
+                </MenuItem>
+            </items>
             <StackPane.margin>
                 <Insets right="44" bottom="44"/>
             </StackPane.margin>
-        </Button>
+        </MenuButton>
     </StackPane>
 
     <!-- ===================== FORMULARIO (crear / modificar) SOBRE LA VISTA DESENFOCADA ===================== -->
@@ -171,5 +187,74 @@
                 </Button>
             </HBox>
         </VBox>
+    </StackPane>
+
+
+        <!-- ===================== FORMULARIO DE CATEGORÍA (NUEVO) ===================== -->
+<StackPane fx:id="categoryOverlay" styleClass="mov-scrim" visible="false" managed="false">
+<VBox styleClass="mov-form-card" spacing="14" maxWidth="420" maxHeight="-Infinity">
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Nueva categoría" styleClass="mov-form-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button onAction="#cancelCategoryForm" styleClass="mov-icon-btn" focusTraversable="false">
+            <graphic>
+                <FontIcon iconLiteral="fas-times" iconSize="16"/>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <VBox spacing="5">
+        <Label text="Nombre de la categoría" styleClass="mov-label"/>
+        <TextField fx:id="txtCategoryName" promptText="Ej. Inversiones" styleClass="mov-field" onAction="#saveCategory"/>
+    </VBox>
+
+    <Label fx:id="lblCategoryError" wrapText="true" maxWidth="Infinity" styleClass="mov-error"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" onAction="#cancelCategoryForm" styleClass="mov-btn-secondary"/>
+        <Button fx:id="btnSaveCategory" text="Guardar" onAction="#saveCategory" styleClass="mov-btn-primary">
+            <graphic>
+                <FontIcon iconLiteral="fas-save" iconSize="14"/>
+            </graphic>
+        </Button>
+    </HBox>
+</VBox>
+</StackPane>
+
+        <!-- ===================== FORMULARIO DE CUENTA (NUEVO) ===================== -->
+<StackPane fx:id="accountOverlay" styleClass="mov-scrim" visible="false" managed="false">
+    <VBox styleClass="mov-form-card" spacing="14" maxWidth="420" maxHeight="-Infinity">
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Nueva cuenta" styleClass="mov-form-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button onAction="#cancelAccountForm" styleClass="mov-icon-btn" focusTraversable="false">
+                <graphic>
+                    <FontIcon iconLiteral="fas-times" iconSize="16"/>
+                </graphic>
+            </Button>
+        </HBox>
+
+        <VBox spacing="12">
+            <VBox spacing="5">
+                <Label text="Nombre de la cuenta" styleClass="mov-label"/>
+                <TextField fx:id="txtAccountName" promptText="Ej. Tarjeta de nómina" styleClass="mov-field"/>
+            </VBox>
+            <VBox spacing="5">
+                <Label text="Número de cuenta (opcional)" styleClass="mov-label"/>
+                <TextField fx:id="txtAccountNumber" promptText="Ej. **** 1234" styleClass="mov-field" onAction="#saveAccount"/>
+            </VBox>
+        </VBox>
+
+        <Label fx:id="lblAccountError" wrapText="true" maxWidth="Infinity" styleClass="mov-error"/>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="Cancelar" onAction="#cancelAccountForm" styleClass="mov-btn-secondary"/>
+            <Button fx:id="btnSaveAccount" text="Guardar" onAction="#saveAccount" styleClass="mov-btn-primary">
+                <graphic>
+                    <FontIcon iconLiteral="fas-save" iconSize="14"/>
+                </graphic>
+            </Button>
+        </HBox>
+    </VBox>
     </StackPane>
 </StackPane>

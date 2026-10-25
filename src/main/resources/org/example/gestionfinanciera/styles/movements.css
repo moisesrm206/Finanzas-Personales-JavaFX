@@ -224,8 +224,8 @@
     -fx-icon-color: white;
 }
 
-/* ===== Botón flotante ===== */
-.mov-fab {
+/* ===== Botón Flotante Desplegable (MenuButton) ===== */
+.mov-fab-menu {
     -fx-background-color: #2563eb;
     -fx-background-radius: 50;
     -fx-min-width: 58;
@@ -233,13 +233,25 @@
     -fx-max-width: 58;
     -fx-max-height: 58;
     -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-content-display: graphic-only;
     -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.45), 14, 0, 0, 4);
 }
-.mov-fab:hover {
+.mov-fab-menu:hover {
     -fx-background-color: #1d4ed8;
 }
-.mov-fab .ikonli-font-icon {
+.mov-fab-menu .ikonli-font-icon {
     -fx-icon-color: white;
+}
+/* Ocultamos la flecha por defecto del MenuButton para que solo se vea el ícono + */
+.mov-fab-menu > .arrow-button {
+    -fx-padding: 0;
+    -fx-max-width: 0;
+    -fx-opacity: 0;
+}
+.mov-fab-menu > .label {
+    -fx-padding: 0;
+    -fx-max-width: 0;
 }
 
 /* ===== Formulario sobre la vista desenfocada ===== */

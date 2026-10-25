@@ -4,6 +4,7 @@ import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
@@ -34,20 +35,23 @@ public class PDFExportStrategy implements ExportStrategy {
 
         try (PdfWriter writer = new PdfWriter(Path.of(filePath).toFile());
              PdfDocument pdf = new PdfDocument(writer);
-             Document document = new Document(pdf)) {
+             Document document = new Document(pdf, PageSize.A4.rotate())) {
+            document.setMargins(24, 24, 24, 24);
             var boldFont = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
             document.add(new Paragraph("Movimientos financieros")
                     .setFont(boldFont)
-                    .setFontSize(16));
+                    .setFontSize(14));
 
             Table table = new Table(UnitValue.createPercentArray(HEADERS.length))
                     .useAllAvailableWidth();
             for (String header : HEADERS) {
-                table.addHeaderCell(new Cell().add(new Paragraph(header).setFont(boldFont)));
+                table.addHeaderCell(new Cell().add(new Paragraph(header)
+                        .setFont(boldFont)
+                        .setFontSize(7)));
             }
             for (Movement movement : movements) {
                 for (String value : values(movement)) {
-                    table.addCell(value);
+                    table.addCell(new Cell().add(new Paragraph(value).setFontSize(7)));
                 }
             }
             document.add(table);

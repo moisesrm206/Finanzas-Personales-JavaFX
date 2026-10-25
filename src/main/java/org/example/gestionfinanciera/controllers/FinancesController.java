@@ -124,6 +124,19 @@ public class FinancesController {
     @FXML private TextField txtTags;
     @FXML private Label lblFormError;
     @FXML private Button btnSaveForm;
+    @FXML private MenuButton btnAddMenu;
+
+    // Nuevos formularios superpuestos (Overlays)
+    @FXML private StackPane categoryOverlay;
+    @FXML private TextField txtCategoryName;
+    @FXML private Label lblCategoryError;
+    @FXML private Button btnSaveCategory;
+
+    @FXML private StackPane accountOverlay;
+    @FXML private TextField txtAccountName;
+    @FXML private TextField txtAccountNumber;
+    @FXML private Label lblAccountError;
+    @FXML private Button btnSaveAccount;
 
     private final CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
     private final MovementDAOImpl movementDAO = new MovementDAOImpl();
@@ -349,38 +362,39 @@ public class FinancesController {
     //  Carga de datos
     // =====================================================================
 
-    /** Carga categorías, cuentas y movimientos (en ese orden, porque la lista usa los nombres). */
+    /** Carga categorías, cuentas y movimientos del usuario. */
     private void loadAll() {
         String userId = currentUserId();
         if (userId == null) {
             return;
         }
 
-        // Si el usuario es nuevo y no tiene categorías ni cuentas, se crea un conjunto básico
         Task<List<Category>> categoriesTask = categoryService.ensureDefaultCategoriesTask(userId);
         begin();
         categoriesTask.setOnSucceeded(event -> {
             end();
             applyCategories(categoriesTask.getValue());
-
-            Task<List<Account>> accountsTask = accountService.ensureDefaultAccountsTask(userId);
-            begin();
-            accountsTask.setOnSucceeded(accountsEvent -> {
-                end();
-                applyAccounts(accountsTask.getValue());
-                loadMovements();
-            });
-            accountsTask.setOnFailed(accountsEvent -> {
-                end();
-                showError(accountsTask.getException(), false);
-            });
-            run(accountsTask);
         });
         categoriesTask.setOnFailed(event -> {
             end();
             showError(categoriesTask.getException(), false);
         });
         run(categoriesTask);
+
+        Task<List<Account>> accountsTask = accountService.ensureDefaultAccountsTask(userId);
+        begin();
+        accountsTask.setOnSucceeded(event -> {
+            end();
+            applyAccounts(accountsTask.getValue());
+        });
+        accountsTask.setOnFailed(event -> {
+            end();
+            showError(accountsTask.getException(), false);
+        });
+        run(accountsTask);
+
+        // La lista no debe quedar bloqueada si falla la carga de cuentas o categorías.
+        loadMovements();
     }
 
     private void loadMovements() {
@@ -418,6 +432,7 @@ public class FinancesController {
         filterItems.addAll(list);
         cmbFilterCategory.setItems(filterItems);
         cmbFilterCategory.setValue(ALL_CATEGORIES);
+        listMovements.refresh();
     }
 
     private void applyAccounts(List<Account> list) {
@@ -425,7 +440,11 @@ public class FinancesController {
         for (Account account : list) {
             accountNames.put(account.getAccountId(), account.getAccountName());
         }
+
         accountItems.setAll(list);
+        cmbAccount.setItems(accountItems);
+        cmbDestination.setItems(accountItems);
+        listMovements.refresh();
     }
 
     // =====================================================================
@@ -676,6 +695,177 @@ public class FinancesController {
         if (animation != null) {
             animation.stop();
         }
+    }
+
+    @FXML
+    private void newCategory() {
+        txtCategoryName.clear();
+        lblCategoryError.setText("");
+        showCustomOverlay(categoryOverlay, btnSaveCategory, txtCategoryName);
+    }
+
+    @FXML
+    private void cancelCategoryForm() {
+        hideCustomOverlay(categoryOverlay, btnSaveCategory);
+    }
+
+    @FXML
+    private void saveCategory() {
+        String userId = currentUserId();
+        if (userId == null) return;
+
+        String name = txtCategoryName.getText();
+        if (name == null || name.isBlank()) {
+            lblCategoryError.setText("El nombre de la categoría es obligatorio.");
+            return;
+        }
+
+        begin();
+        lblCategoryError.setText("");
+        Task<Category> task = categoryService.addCategoryTask(userId, name);
+        task.setOnSucceeded(event -> {
+            end();
+            hideCustomOverlay(categoryOverlay, btnSaveCategory);
+            setMessage("Categoría creada exitosamente.", false);
+            // Recargamos las categorías para que aparezcan actualizadas en los ComboBox y filtros
+            reloadCategoriesAndAccounts();
+        });
+        task.setOnFailed(event -> {
+            end();
+            showError(task.getException(), false);
+            lblCategoryError.setText(task.getException().getMessage());
+        });
+        run(task);
+    }
+
+    // =====================================================================
+    //  Formulario: Nueva Cuenta
+    // =====================================================================
+
+    @FXML
+    private void newAccount() {
+        txtAccountName.clear();
+        txtAccountNumber.clear();
+        lblAccountError.setText("");
+        showCustomOverlay(accountOverlay, btnSaveAccount, txtAccountName);
+    }
+
+    @FXML
+    private void cancelAccountForm() {
+        hideCustomOverlay(accountOverlay, btnSaveAccount);
+    }
+
+    @FXML
+    private void saveAccount() {
+        String userId = currentUserId();
+        if (userId == null) return;
+
+        String name = txtAccountName.getText();
+        String number = txtAccountNumber.getText();
+
+        if (name == null || name.isBlank()) {
+            lblAccountError.setText("El nombre de la cuenta es obligatorio.");
+            return;
+        }
+
+        begin();
+        lblAccountError.setText("");
+        Task<Account> task = accountService.addAccountTask(userId, name, number);
+        task.setOnSucceeded(event -> {
+            end();
+            hideCustomOverlay(accountOverlay, btnSaveAccount);
+            setMessage("Cuenta creada exitosamente.", false);
+            // Recargamos las cuentas para que aparezcan en los ComboBox de movimientos
+            reloadCategoriesAndAccounts();
+        });
+        task.setOnFailed(event -> {
+            end();
+            showError(task.getException(), false);
+            lblAccountError.setText(task.getException().getMessage());
+        });
+        run(task);
+    }
+
+    // =====================================================================
+    //  Métodos auxiliares para refrescar listas y manejar animaciones
+    // =====================================================================
+
+    private void reloadCategoriesAndNames() {
+        String userId = currentUserId();
+        if (userId == null) {
+            return;
+        }
+
+        Task<List<Category>> categoriesTask = categoryService.loadCategoriesTask(userId);
+        begin();
+        categoriesTask.setOnSucceeded(event -> {
+            end();
+            applyCategories(categoriesTask.getValue());
+        });
+        categoriesTask.setOnFailed(event -> {
+            end();
+            showError(categoriesTask.getException(), false);
+        });
+        run(categoriesTask);
+
+        Task<List<Account>> accountsTask = accountService.loadAccountsTask(userId);
+        begin();
+        accountsTask.setOnSucceeded(event -> {
+            end();
+            applyAccounts(accountsTask.getValue());
+        });
+        accountsTask.setOnFailed(event -> {
+            end();
+            showError(accountsTask.getException(), false);
+        });
+        run(accountsTask);
+    }
+
+    // Alias por compatibilidad interna si lo requieres
+    private void reloadCategoriesAndAccounts() {
+        reloadCategoriesAndNames();
+    }
+
+    private void showCustomOverlay(StackPane targetOverlay, Button defaultButton, TextField fieldToFocus) {
+        stopAnimation();
+        targetOverlay.setVisible(true);
+        targetOverlay.setManaged(true);
+        targetOverlay.setOpacity(0);
+
+        GaussianBlur blur = new GaussianBlur(0);
+        mainLayer.setEffect(blur);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(160), targetOverlay);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        Timeline blurIn = new Timeline(
+                new KeyFrame(Duration.millis(180), new KeyValue(blur.radiusProperty(), 12)));
+
+        animation = new ParallelTransition(fade, blurIn);
+        animation.play();
+
+        defaultButton.setDefaultButton(true);
+        Platform.runLater(fieldToFocus::requestFocus);
+    }
+
+    private void hideCustomOverlay(StackPane targetOverlay, Button defaultButton) {
+        stopAnimation();
+        defaultButton.setDefaultButton(false);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(140), targetOverlay);
+        fade.setToValue(0);
+        ParallelTransition out = new ParallelTransition(fade);
+        if (mainLayer.getEffect() instanceof GaussianBlur blur) {
+            out.getChildren().add(new Timeline(
+                    new KeyFrame(Duration.millis(140), new KeyValue(blur.radiusProperty(), 0))));
+        }
+        out.setOnFinished(event -> {
+            targetOverlay.setVisible(false);
+            targetOverlay.setManaged(false);
+            mainLayer.setEffect(null);
+        });
+        animation = out;
+        out.play();
     }
 
     // =====================================================================
