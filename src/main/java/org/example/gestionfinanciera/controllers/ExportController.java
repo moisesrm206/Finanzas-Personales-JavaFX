@@ -79,6 +79,7 @@ public class ExportController {
     // id -> nombre, para que el archivo muestre nombres y no los ids de Firestore
     private final Map<String, String> categoryNames = new HashMap<>();
     private final Map<String, String> accountNames = new HashMap<>();
+    private final Map<String, String> accountNumbers = new HashMap<>();
 
     @FXML
     private void initialize() {
@@ -148,8 +149,10 @@ public class ExportController {
         Task<List<Account>> task = accountService.loadAccountsTask(userId);
         task.setOnSucceeded(event -> {
             accountNames.clear();
+            accountNumbers.clear();
             for (Account account : task.getValue()) {
                 accountNames.put(account.getAccountId(), account.getAccountName());
+                accountNumbers.put(account.getAccountId(), account.getAccountNumber());
             }
         });
         // Si falla no es grave: el archivo mostrará los ids de las cuentas
@@ -259,7 +262,7 @@ public class ExportController {
                     movement.getMovementId(),
                     categoryNames.getOrDefault(movement.getCategoryId(), nullToEmpty(movement.getCategoryId())),
                     accountNames.getOrDefault(movement.getOriginAccountId(), nullToEmpty(movement.getOriginAccountId())),
-                    accountNames.getOrDefault(movement.getDestinationAccountId(), nullToEmpty(movement.getDestinationAccountId())),
+                    readableDestination(movement.getDestinationAccountId()),
                     userName,
                     movement.getAmount(),
                     movement.getType(),
@@ -270,6 +273,17 @@ public class ExportController {
                     movement.getTags()));
         }
         return copies;
+    }
+
+    private String readableDestination(String accountId) {
+        if (accountId == null || accountId.isBlank()) {
+            return "";
+        }
+        String number = accountNumbers.get(accountId);
+        if (number != null && !number.isBlank()) {
+            return number;
+        }
+        return accountNames.getOrDefault(accountId, accountId);
     }
 
     private MovementFilter buildFilter() {

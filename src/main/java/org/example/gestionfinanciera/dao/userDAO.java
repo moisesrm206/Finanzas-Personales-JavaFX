@@ -12,4 +12,7 @@ public interface userDAO {
     void saveUser(User user);
     void updateUser(User user);
     void deleteUser(User user);
+    boolean usernameAvailable(String username, String currentUserId);
+    void updateProfile(String userId, String username, String currentPassword, String newPassword);
+    void deleteUserData(String userId);
 }

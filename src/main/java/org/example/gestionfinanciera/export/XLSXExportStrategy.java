@@ -14,7 +14,7 @@ import java.util.List;
 
 public class XLSXExportStrategy implements ExportStrategy {
     private static final String[] HEADERS = {
-            "ID", "Categoría", "Cuenta origen", "Cuenta destino", "Usuario",
+            "Categoría", "Cuenta origen", "Cuenta destino", "Usuario",
             "Importe", "Tipo", "Concepto", "Método de pago", "Fecha", "Estado", "Etiquetas"
     };
 
@@ -53,7 +53,7 @@ public class XLSXExportStrategy implements ExportStrategy {
 
     private String[] values(Movement movement) {
         return new String[]{
-                String.valueOf(movement.getMovementId()), String.valueOf(movement.getCategoryId()),
+                String.valueOf(movement.getCategoryId()),
                 String.valueOf(movement.getOriginAccountId()), String.valueOf(movement.getDestinationAccountId()),
                 String.valueOf(movement.getUserId()), String.valueOf(movement.getAmount()),
                 text(movement.getType()), text(movement.getConcept()), text(movement.getPaymentMethod()),

@@ -97,6 +97,20 @@
                 <Insets right="44" bottom="44"/>
             </StackPane.margin>
         </MenuButton>
+        <MenuButton fx:id="btnDeleteMenu" styleClass="mov-fab-menu"
+                    StackPane.alignment="BOTTOM_LEFT" focusTraversable="false" popupSide="TOP">
+            <graphic>
+                <FontIcon iconLiteral="fas-minus" iconSize="22"/>
+            </graphic>
+            <tooltip><Tooltip text="Eliminar cuenta o categoría"/></tooltip>
+            <items>
+                <MenuItem text="Eliminar categoría" onAction="#deleteCategory"/>
+                <MenuItem text="Eliminar cuenta" onAction="#deleteAccount"/>
+            </items>
+            <StackPane.margin>
+                <Insets left="44" bottom="44"/>
+            </StackPane.margin>
+        </MenuButton>
     </StackPane>
 
     <!-- ===================== FORMULARIO (crear / modificar) SOBRE LA VISTA DESENFOCADA ===================== -->
@@ -146,11 +160,12 @@
                               styleClass="mov-combo"/>
                 </VBox>
 
-                <!-- Solo se ve cuando el tipo es Transferencia -->
                 <VBox fx:id="boxDestination" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <Label text="Cuenta destino" styleClass="mov-label"/>
-                    <ComboBox fx:id="cmbDestination" promptText="Elige la cuenta destino" maxWidth="Infinity"
+                    <Label text="Cuenta destino (opcional)" styleClass="mov-label"/>
+                    <ComboBox fx:id="cmbDestination" promptText="Elige una cuenta registrada" maxWidth="Infinity"
                               styleClass="mov-combo"/>
+                    <Label text="La cuenta debe estar registrada previamente."
+                           styleClass="mov-hint" wrapText="true"/>
                 </VBox>
 
                 <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="3">
@@ -221,7 +236,41 @@
 </VBox>
 </StackPane>
 
-        <!-- ===================== FORMULARIO DE CUENTA (NUEVO) ===================== -->
+<StackPane fx:id="deleteCategoryOverlay" styleClass="mov-scrim" visible="false" managed="false">
+    <VBox styleClass="mov-form-card" spacing="14" maxWidth="420" maxHeight="-Infinity">
+        <Label text="Eliminar categoría" styleClass="mov-form-title"/>
+        <Label text="Selecciona una categoría. No se puede eliminar si tiene movimientos registrados."
+               styleClass="mov-hint" wrapText="true"/>
+        <ComboBox fx:id="cmbDeleteCategory" promptText="Elige una categoría"
+                  maxWidth="Infinity" styleClass="mov-combo"/>
+        <Label fx:id="lblDeleteCategoryError" wrapText="true" maxWidth="Infinity"
+               styleClass="mov-error"/>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="Cancelar" onAction="#cancelDeleteCategory" styleClass="mov-btn-secondary"/>
+            <Button fx:id="btnDeleteCategory" text="Eliminar" onAction="#confirmDeleteCategory"
+                    styleClass="mov-btn-primary"/>
+        </HBox>
+    </VBox>
+</StackPane>
+
+<StackPane fx:id="deleteAccountOverlay" styleClass="mov-scrim" visible="false" managed="false">
+    <VBox styleClass="mov-form-card" spacing="14" maxWidth="420" maxHeight="-Infinity">
+        <Label text="Eliminar cuenta" styleClass="mov-form-title"/>
+        <Label text="Selecciona una cuenta. No se puede eliminar si tiene movimientos registrados."
+               styleClass="mov-hint" wrapText="true"/>
+        <ComboBox fx:id="cmbDeleteAccount" promptText="Elige una cuenta"
+                  maxWidth="Infinity" styleClass="mov-combo"/>
+        <Label fx:id="lblDeleteAccountError" wrapText="true" maxWidth="Infinity"
+               styleClass="mov-error"/>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="Cancelar" onAction="#cancelDeleteAccount" styleClass="mov-btn-secondary"/>
+            <Button fx:id="btnDeleteAccount" text="Eliminar" onAction="#confirmDeleteAccount"
+                    styleClass="mov-btn-primary"/>
+        </HBox>
+    </VBox>
+</StackPane>
+
+    <!-- ===================== FORMULARIO DE CUENTA (NUEVO) ===================== -->
 <StackPane fx:id="accountOverlay" styleClass="mov-scrim" visible="false" managed="false">
     <VBox styleClass="mov-form-card" spacing="14" maxWidth="420" maxHeight="-Infinity">
         <HBox alignment="CENTER_LEFT">

@@ -17,7 +17,7 @@ public class userServiceImpl implements userService {
     private final userDAO userdao ;
 
     public userServiceImpl(userDAO userdao) {
-        this.userdao = new userDAOImpl();
+        this.userdao = userdao;
     }
 
     @Override
@@ -68,6 +68,49 @@ public class userServiceImpl implements userService {
                 User user = new User(username, password);
                 userdao.saveUser(user);
                 return user;
+            }
+        };
+    }
+
+    @Override
+    public Task<Boolean> usernameAvailableTask(String username, String currentUserId) {
+        return new Task<>() {
+            @Override
+            protected Boolean call() {
+                return username != null && !username.isBlank()
+                        && userdao.usernameAvailable(username.trim(), currentUserId);
+            }
+        };
+    }
+
+    @Override
+    public Task<User> updateProfileTask(String userId, String username, String currentPassword,
+                                        String newPassword) {
+        return new Task<>() {
+            @Override
+            protected User call() {
+                if (username == null || username.isBlank()) {
+                    throw new IllegalArgumentException("El nombre de usuario es obligatorio.");
+                }
+                if (newPassword != null && !newPassword.isBlank() && newPassword.length() < 6) {
+                    throw new IllegalArgumentException("La nueva contraseña debe tener al menos 6 caracteres.");
+                }
+                if (!userdao.usernameAvailable(username, userId)) {
+                    throw new IllegalArgumentException("Ese nombre de usuario ya está en uso.");
+                }
+                userdao.updateProfile(userId, username, currentPassword, newPassword);
+                return userdao.getUserById(userId);
+            }
+        };
+    }
+
+    @Override
+    public Task<Void> deleteAccountDataTask(String userId) {
+        return new Task<>() {
+            @Override
+            protected Void call() {
+                userdao.deleteUserData(userId);
+                return null;
             }
         };
     }

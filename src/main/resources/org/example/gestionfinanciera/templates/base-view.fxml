@@ -20,7 +20,9 @@
             </Button>
             <Label text="Gestión de Finanzas Personales" styleClass="header-title"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <Label text="" styleClass="profile-icon"/>
+            <Button onAction="#openProfile" styleClass="profile-icon" focusTraversable="false">
+                <graphic><FontIcon iconLiteral="fas-user" iconSize="22"/></graphic>
+            </Button>
         </HBox>
     </top>
     <left>
@@ -50,7 +52,11 @@
                     <FontIcon iconLiteral="fas-dollar-sign" iconSize="16"/>
                 </graphic>
             </Button>
-
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="Cerrar sesión" styleClass="navigation-button"
+                    focusTraversable="false" onAction="#logout">
+                <graphic><FontIcon iconLiteral="fas-sign-out-alt" iconSize="16"/></graphic>
+            </Button>
         </VBox>
     </left>
     <center>

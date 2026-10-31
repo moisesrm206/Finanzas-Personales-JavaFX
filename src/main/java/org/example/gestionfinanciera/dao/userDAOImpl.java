@@ -7,6 +7,8 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.WriteBatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,6 +102,57 @@ public class userDAOImpl implements userDAO{
         await(usersDocument(user.getId()).delete());
     }
 
+    @Override
+    public boolean usernameAvailable(String username, String currentUserId) {
+        for (DocumentSnapshot snapshot : await(db.collection(USERS_COLLECTION)
+                .whereEqualTo("name", username.trim()).get()).getDocuments()) {
+            if (!snapshot.getId().equals(currentUserId)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void updateProfile(String userId, String username, String currentPassword, String newPassword) {
+        DocumentSnapshot snapshot = getDocument(userId);
+        if (!snapshot.exists()) {
+            throw new IllegalArgumentException("La cuenta de usuario no existe.");
+        }
+        String storedPassword = snapshot.getString("password");
+        if (!verifyPassword(currentPassword, storedPassword)) {
+            throw new IllegalArgumentException("La contraseña actual no es correcta.");
+        }
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", username.trim());
+        data.put("password", newPassword == null || newPassword.isBlank()
+                ? storedPassword : hashIfNeeded(newPassword));
+        await(usersDocument(userId).set(data));
+    }
+
+    @Override
+    public void deleteUserData(String userId) {
+        for (String collection : List.of("movements", "categories", "accounts", "budgets")) {
+            List<QueryDocumentSnapshot> documents = await(db.collection(collection)
+                    .whereEqualTo("userId", userId).get()).getDocuments();
+            WriteBatch batch = db.batch();
+            int pending = 0;
+            for (DocumentSnapshot document : documents) {
+                batch.delete(document.getReference());
+                pending++;
+                if (pending == 400) {
+                    await(batch.commit());
+                    batch = db.batch();
+                    pending = 0;
+                }
+            }
+            if (pending > 0) {
+                await(batch.commit());
+            }
+        }
+        await(usersDocument(userId).delete());
+    }
+
     private DocumentSnapshot getDocument(String id) {
         return await(usersDocument(id).get());
     }
@@ -150,6 +203,24 @@ public class userDAOImpl implements userDAO{
                     + Base64.getEncoder().encodeToString(hash);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException("No se pudo proteger la contraseña", e);
+        }
+    }
+
+    private boolean verifyPassword(String password, String storedPassword) {
+        if (password == null || storedPassword == null || !storedPassword.startsWith(PASSWORD_PREFIX)) {
+            return false;
+        }
+        try {
+            String[] parts = storedPassword.split("\\$");
+            byte[] salt = Base64.getDecoder().decode(parts[2]);
+            byte[] expectedHash = Base64.getDecoder().decode(parts[3]);
+            PBEKeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt,
+                    Integer.parseInt(parts[1]), expectedHash.length * 8);
+            byte[] actualHash = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+                    .generateSecret(keySpec).getEncoded();
+            return java.security.MessageDigest.isEqual(expectedHash, actualHash);
+        } catch (Exception e) {
+            return false;
         }
     }
 

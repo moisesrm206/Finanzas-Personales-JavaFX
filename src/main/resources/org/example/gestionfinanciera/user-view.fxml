@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.gestionfinanciera.controllers.UserController"
+           stylesheets="@styles/profile.css" styleClass="profile-page">
+    <VBox spacing="16" maxWidth="600" styleClass="profile-card">
+        <FontIcon iconLiteral="fas-user-circle" iconSize="72" styleClass="profile-large-icon"/>
+        <Label text="Mi cuenta" styleClass="profile-title"/>
+        <Label text="Actualiza tu nombre de usuario o cambia tu contraseña." styleClass="profile-subtitle"/>
+        <Label text="Nombre de usuario" styleClass="profile-label"/>
+        <TextField fx:id="txtUsername" styleClass="profile-field"/>
+        <Button text="Comprobar disponibilidad" onAction="#checkAvailability" styleClass="profile-secondary"/>
+        <Label fx:id="lblAvailability" styleClass="profile-hint"/>
+        <Label text="Contraseña actual" styleClass="profile-label"/>
+        <PasswordField fx:id="txtCurrentPassword" promptText="Escribe tu contraseña actual" styleClass="profile-field"/>
+        <Label text="Nueva contraseña" styleClass="profile-label"/>
+        <PasswordField fx:id="txtNewPassword" promptText="Mínimo 6 caracteres" styleClass="profile-field"/>
+        <Label text="Confirmar nueva contraseña" styleClass="profile-label"/>
+        <PasswordField fx:id="txtConfirmPassword" styleClass="profile-field"/>
+        <Label fx:id="lblMessage" wrapText="true" styleClass="profile-message"/>
+        <Button fx:id="btnSave" text="Guardar cambios" onAction="#saveProfile" styleClass="profile-primary"/>
+        <Separator/>
+        <Button fx:id="btnDelete" text="Eliminar mi cuenta y todos mis datos"
+                onAction="#deleteAccount" styleClass="profile-danger"/>
+    </VBox>
+</StackPane>

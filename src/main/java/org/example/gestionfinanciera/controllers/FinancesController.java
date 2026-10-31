@@ -133,6 +133,14 @@ public class FinancesController {
     @FXML private Button btnSaveCategory;
 
     @FXML private StackPane accountOverlay;
+    @FXML private StackPane deleteCategoryOverlay;
+    @FXML private StackPane deleteAccountOverlay;
+    @FXML private ComboBox<Category> cmbDeleteCategory;
+    @FXML private ComboBox<Account> cmbDeleteAccount;
+    @FXML private Label lblDeleteCategoryError;
+    @FXML private Label lblDeleteAccountError;
+    @FXML private Button btnDeleteCategory;
+    @FXML private Button btnDeleteAccount;
     @FXML private TextField txtAccountName;
     @FXML private TextField txtAccountNumber;
     @FXML private Label lblAccountError;
@@ -480,14 +488,14 @@ public class FinancesController {
         cmbCategory.setConverter(converter(Category::getCategoryName));
         cmbAccount.setConverter(converter(Account::getAccountName));
         cmbDestination.setConverter(converter(Account::getAccountName));
+        cmbDeleteCategory.setConverter(converter(Category::getCategoryName));
+        cmbDeleteAccount.setConverter(converter(Account::getAccountName));
         cmbAccount.setItems(accountItems);
         cmbDestination.setItems(accountItems);
 
-        // La cuenta destino solo aplica a las transferencias
+        // La cuenta destino es opcional; si se usa, debe existir previamente.
         BooleanBinding transfer = Bindings.createBooleanBinding(
                 () -> MovementTypes.TRANSFER.equals(cmbType.getValue()), cmbType.valueProperty());
-        boxDestination.visibleProperty().bind(transfer);
-        boxDestination.managedProperty().bind(transfer);
         lblAccount.textProperty().bind(Bindings.when(transfer).then("Cuenta origen").otherwise("Cuenta"));
 
         // Esc cierra el formulario
@@ -786,6 +794,89 @@ public class FinancesController {
         run(task);
     }
 
+    @FXML
+    private void deleteCategory() {
+        lblDeleteCategoryError.setText("");
+        cmbDeleteCategory.setItems(FXCollections.observableArrayList(categories));
+        cmbDeleteCategory.setValue(null);
+        showCustomOverlay(deleteCategoryOverlay, btnDeleteCategory, cmbDeleteCategory);
+    }
+
+    @FXML
+    private void deleteAccount() {
+        lblDeleteAccountError.setText("");
+        cmbDeleteAccount.setItems(accountItems);
+        cmbDeleteAccount.setValue(null);
+        showCustomOverlay(deleteAccountOverlay, btnDeleteAccount, cmbDeleteAccount);
+    }
+
+    @FXML
+    private void cancelDeleteCategory() {
+        hideCustomOverlay(deleteCategoryOverlay, btnDeleteCategory);
+    }
+
+    @FXML
+    private void cancelDeleteAccount() {
+        hideCustomOverlay(deleteAccountOverlay, btnDeleteAccount);
+    }
+
+    @FXML
+    private void confirmDeleteCategory() {
+        Category category = cmbDeleteCategory.getValue();
+        if (category == null) {
+            lblDeleteCategoryError.setText("Selecciona una categoría.");
+            return;
+        }
+        String userId = currentUserId();
+        if (userId == null) return;
+        begin();
+        Task<Void> task = categoryService.deleteCategoryTask(userId, category.getCategoryId());
+        task.setOnSucceeded(event -> {
+            end();
+            hideCustomOverlay(deleteCategoryOverlay, btnDeleteCategory);
+            setMessage("Categoría eliminada.", false);
+            reloadCategoriesAndAccounts();
+        });
+        task.setOnFailed(event -> {
+            end();
+            lblDeleteCategoryError.setText(errorMessage(task.getException()));
+        });
+        run(task);
+    }
+
+    @FXML
+    private void confirmDeleteAccount() {
+        Account account = cmbDeleteAccount.getValue();
+        if (account == null) {
+            lblDeleteAccountError.setText("Selecciona una cuenta.");
+            return;
+        }
+        String userId = currentUserId();
+        if (userId == null) return;
+        begin();
+        Task<Void> task = accountService.deleteAccountTask(userId, account.getAccountId());
+        task.setOnSucceeded(event -> {
+            end();
+            hideCustomOverlay(deleteAccountOverlay, btnDeleteAccount);
+            setMessage("Cuenta eliminada.", false);
+            reloadCategoriesAndAccounts();
+        });
+        task.setOnFailed(event -> {
+            end();
+            lblDeleteAccountError.setText(errorMessage(task.getException()));
+        });
+        run(task);
+    }
+
+    private String errorMessage(Throwable error) {
+        Throwable cause = error;
+        while (cause != null && cause.getCause() != null) {
+            cause = cause.getCause();
+        }
+        return cause == null || cause.getMessage() == null
+                ? "No se pudo completar la eliminación." : cause.getMessage();
+    }
+
     // =====================================================================
     //  Métodos auxiliares para refrescar listas y manejar animaciones
     // =====================================================================
@@ -846,6 +937,27 @@ public class FinancesController {
 
         defaultButton.setDefaultButton(true);
         Platform.runLater(fieldToFocus::requestFocus);
+    }
+
+    private void showCustomOverlay(StackPane targetOverlay, Button defaultButton,
+                                    ComboBox<?> comboToFocus) {
+        stopAnimation();
+        targetOverlay.setVisible(true);
+        targetOverlay.setManaged(true);
+        targetOverlay.setOpacity(0);
+
+        GaussianBlur blur = new GaussianBlur(0);
+        mainLayer.setEffect(blur);
+        FadeTransition fade = new FadeTransition(Duration.millis(160), targetOverlay);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        Timeline blurIn = new Timeline(
+                new KeyFrame(Duration.millis(180), new KeyValue(blur.radiusProperty(), 12)));
+        animation = new ParallelTransition(fade, blurIn);
+        animation.play();
+
+        defaultButton.setDefaultButton(true);
+        Platform.runLater(comboToFocus::requestFocus);
     }
 
     private void hideCustomOverlay(StackPane targetOverlay, Button defaultButton) {

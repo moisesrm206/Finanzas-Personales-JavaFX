@@ -1,0 +1,14 @@
+.profile-page { -fx-padding: 32; -fx-background-color: transparent; }
+.profile-card { -fx-background-color: white; -fx-background-radius: 14; -fx-padding: 32; -fx-effect: dropshadow(gaussian, rgba(15,23,42,.18), 24, 0, 0, 6); }
+.profile-large-icon { -fx-icon-color: #1d3557; }
+.profile-title { -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #0f172a; }
+.profile-subtitle, .profile-hint { -fx-text-fill: #475569; }
+.profile-label { -fx-font-weight: bold; -fx-text-fill: #0f172a; }
+.profile-field { -fx-font-size: 14px; }
+.profile-primary, .profile-secondary, .profile-danger { -fx-cursor: hand; -fx-padding: 9 14; }
+.profile-primary { -fx-background-color: #1d3557; -fx-text-fill: white; }
+.profile-secondary { -fx-background-color: #e2e8f0; -fx-text-fill: #0f172a; }
+.profile-danger { -fx-background-color: #b91c1c; -fx-text-fill: white; }
+.profile-message { -fx-padding: 9 12; -fx-background-radius: 8; }
+.profile-ok { -fx-background-color: #dcfce7; -fx-text-fill: #166534; }
+.profile-error { -fx-background-color: #fee2e2; -fx-text-fill: #991b1b; }

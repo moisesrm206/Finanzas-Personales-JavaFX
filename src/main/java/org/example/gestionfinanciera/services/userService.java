@@ -10,4 +10,8 @@ public interface userService {
     Task<List<User>> loadUsersTask();
     Task<User> authenticateTask(String username, String password);
     Task<User> registerTask(String username, String password);
+    Task<Boolean> usernameAvailableTask(String username, String currentUserId);
+    Task<User> updateProfileTask(String userId, String username, String currentPassword,
+                                 String newPassword);
+    Task<Void> deleteAccountDataTask(String userId);
 }
